@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="deployJarToProd" name="Create Runnable Jar for Project PortfolioPriceWatch">
+	<target name="setProperties">
+		<property environment="env" />
+		<property name="prod" value="${env.JWM_PROD}" />
+		<property name="deployDir" value="${prod}/stockwatch" />
+		<property name="devDirBase" value="${env.JWM_DEV}" />
+		<property name="devDirApp" value="${env.JWM_DEV}/apps/StockWatch" />
+		<property name="appJarName" value="StockWatch.jar"/>
+		<echo message="Deploy directory: ${deployDir}" />
+	</target>
+	<target name="deployJarToProd" depends="setProperties">
+		<copy todir="${deployDir}">
+			<fileset dir="${devDirApp}/resources/" />
+		</copy>
+		<jar destfile="${deployDir}/${appJarName}" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="com.jwm.stockwatch.Main" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${devDirBase}/apps/EmailXmlGenerator/target/classes" />
+			<fileset dir="${devDirApp}/target/classes">
+				<exclude name="**/beans.xml" />
+				<exclude name="**/log4j2.xml" />
+				<exclude name="**/*.properties" />
+			</fileset>
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/springframework/spring-context/4.1.6.RELEASE/spring-context-4.1.6.RELEASE.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/springframework/spring-aop/4.1.6.RELEASE/spring-aop-4.1.6.RELEASE.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/springframework/spring-beans/4.1.6.RELEASE/spring-beans-4.1.6.RELEASE.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/springframework/spring-core/4.1.6.RELEASE/spring-core-4.1.6.RELEASE.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/springframework/spring-expression/4.1.6.RELEASE/spring-expression-4.1.6.RELEASE.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/quartz-scheduler/quartz/2.2.1/quartz-2.2.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/slf4j/slf4j-api/1.6.6/slf4j-api-1.6.6.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/apache/logging/log4j/log4j-api/2.2/log4j-api-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/apache/logging/log4j/log4j-core/2.2/log4j-core-2.2.jar" />
+		</jar>
+	</target>
+</project>
