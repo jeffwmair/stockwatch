@@ -48,6 +48,7 @@ public class App {
 			}
 
 			processor.process(price, lastEmailedPrice);
+			lastEmailedPrice = price;
 			sleep();
 		}
 	}
