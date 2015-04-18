@@ -6,7 +6,7 @@
 		<property name="deployDir" value="${prod}/stockwatch" />
 		<property name="devDirBase" value="${env.JWM_DEV}" />
 		<property name="devDirApp" value="${env.JWM_DEV}/apps/StockWatch" />
-		<property name="appJarName" value="StockWatch.jar"/>
+		<property name="appJarName" value="StockWatch.jar" />
 		<echo message="Deploy directory: ${deployDir}" />
 	</target>
 	<target name="deployJarToProd" depends="setProperties">
@@ -37,6 +37,8 @@
 			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/apache/logging/log4j/log4j-api/2.2/log4j-api-2.2.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/org/apache/logging/log4j/log4j-core/2.2/log4j-core-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="/Users/Jeff/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar" />
 		</jar>
 	</target>
 </project>
