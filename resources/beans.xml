@@ -19,7 +19,7 @@
 	</bean>
 
 
-	<bean id="notifierEmail" class="com.jwm.stockwatch.service.NotifierServiceEmailImpl">
+	<bean id="notifierEmail" class="com.jwm.stockwatch.notifier.NotifierEmailSmtp">
 		<constructor-arg index="0" ref="properties" />
 	</bean>
 
@@ -32,6 +32,7 @@
 		<constructor-arg index="0" ref="properties" />
 		<constructor-arg index="1" ref="fetcherQuicken" />
 		<constructor-arg index="2" ref="priceProcessor" />
+		<constructor-arg index="3" ref="notifierEmail" />
 	</bean>
 
 </beans>

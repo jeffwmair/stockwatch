@@ -4,15 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jwm.stockwatch.domain.PortfolioUnitPrice;
-import com.jwm.stockwatch.service.NotifyService;
+import com.jwm.stockwatch.notifier.Notifier;
 
 public class ProcessorImpl implements Processor {
 
 	private static Logger log = LogManager.getLogger(ProcessorImpl.class);
 	private double priceChangeThreshold;
-	private NotifyService notifier;
+	private Notifier notifier;
 
-	public ProcessorImpl(NotifyService notifier, double threshold) {
+	public ProcessorImpl(Notifier notifier, double threshold) {
 		this.notifier = notifier;
 		this.priceChangeThreshold = threshold;
 	}
@@ -26,7 +26,11 @@ public class ProcessorImpl implements Processor {
 		}
 
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
-			notifier.sendNotification("Portfolio Price Update", price.toString());
+			try {
+				notifier.sendNotification("Portfolio Price Update", price.toString());
+			} catch (Exception e) {
+				log.error("Failed to send email: " + e.getMessage(), e);
+			}
 		}
 	}
 
