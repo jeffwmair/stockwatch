@@ -3,18 +3,18 @@ package com.jwm.stockwatch.domain;
 import java.util.Date;
 
 /**
- * PortfolioUnitPrice - price of a portfolio unit at a particular moment in
+ * UnitPrice - price of a portfolio unit at a particular moment in
  * time.
  * 
  * @author Jeff
  *
  */
-public class PortfolioUnitPrice {
+public class UnitPrice {
 	private double currentPrice, changeInPrice, changeInPercent;
 	private String name;
 	private Date date;
 
-	public PortfolioUnitPrice(String name, Date date, double currentPrice,
+	public UnitPrice(String name, Date date, double currentPrice,
 			double changeInPrice, double changeInPercent) {
 		super();
 		this.currentPrice = currentPrice;
@@ -69,7 +69,7 @@ public class PortfolioUnitPrice {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PortfolioUnitPrice other = (PortfolioUnitPrice) obj;
+		UnitPrice other = (UnitPrice) obj;
 		if (date == null) {
 			if (other.date != null)
 				return false;

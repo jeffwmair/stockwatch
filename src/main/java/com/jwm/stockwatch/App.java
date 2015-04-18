@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jwm.stockwatch.domain.PortfolioUnitPrice;
+import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.fetcher.WebFetcher;
 import com.jwm.stockwatch.processor.Processor;
 
@@ -29,10 +29,10 @@ public class App {
 		log.info("Starting PortfolioWatcher");
 		log.info("***************************************************");
 
-		PortfolioUnitPrice lastEmailedPrice = null;
+		UnitPrice lastEmailedPrice = null;
 		while (true) {
 
-			PortfolioUnitPrice price = fetcher.fetchPortfolioPrice();
+			UnitPrice price = fetcher.fetchPortfolioPrice();
 
 			if (price == null) {
 				log.error("Price object was returned as null.  Sleeping until the next fetch");

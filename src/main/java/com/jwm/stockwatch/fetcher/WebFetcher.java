@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.jwm.stockwatch.domain.PortfolioUnitPrice;
+import com.jwm.stockwatch.domain.UnitPrice;
 
 /**
- * A fetcher fetches a PortfolioUnitPrice from some source
+ * A fetcher fetches a UnitPrice from some source
  * 
  * @author Jeff
  *
@@ -16,7 +16,7 @@ import com.jwm.stockwatch.domain.PortfolioUnitPrice;
 public abstract class WebFetcher {
 	private static Logger log = LogManager.getLogger(WebFetcher.class);
 
-	public PortfolioUnitPrice fetchPortfolioPrice() {
+	public UnitPrice fetchPortfolioPrice() {
 
 		try {
 			Document doc = Jsoup.connect(getPageUrl()).timeout(5000).get();
@@ -28,7 +28,7 @@ public abstract class WebFetcher {
 
 	}
 
-	protected abstract PortfolioUnitPrice parseWebPage(Document doc);
+	protected abstract UnitPrice parseWebPage(Document doc);
 	protected abstract String getPageUrl();
 
 }

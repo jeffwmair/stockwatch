@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.jwm.stockwatch.PropertiesLoader;
-import com.jwm.stockwatch.domain.PortfolioUnitPrice;
+import com.jwm.stockwatch.domain.UnitPrice;
 
 public class FetcherFromGoogleFinanceImpl extends WebFetcher {
 
@@ -38,7 +38,7 @@ public class FetcherFromGoogleFinanceImpl extends WebFetcher {
 	}
 
 	@Override
-	protected PortfolioUnitPrice parseWebPage(Document doc) {
+	protected UnitPrice parseWebPage(Document doc) {
 		try {
 			Element marketDataDiv = doc.getElementById("sharebox-data");
 			log.debug(marketDataDiv);
@@ -50,7 +50,7 @@ public class FetcherFromGoogleFinanceImpl extends WebFetcher {
 			String date_s = getElementContentByPropName(metaEls, "quoteTime").replace("T", " ").replace("Z", "");
 			DateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date quoteDate = dateParser.parse(date_s);
-			return new PortfolioUnitPrice(name, quoteDate, price, changeAmount, changePct);
+			return new UnitPrice(name, quoteDate, price, changeAmount, changePct);
 		} catch (Exception ex) {
 			log.error(ex);
 			return null;

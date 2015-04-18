@@ -5,7 +5,7 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.jwm.stockwatch.PropertiesLoader;
-import com.jwm.stockwatch.domain.PortfolioUnitPrice;
+import com.jwm.stockwatch.domain.UnitPrice;
 
 public class FetcherFromQuickenTest {
 
@@ -16,7 +16,7 @@ public class FetcherFromQuickenTest {
 		PropertiesLoader propsLoader = new PropertiesLoaderStub(props);
 		WebFetcher fetcher = new FetcherFromQuickenImpl(propsLoader);
 		@SuppressWarnings("unused")
-		PortfolioUnitPrice foo = fetcher.fetchPortfolioPrice();
+		UnitPrice foo = fetcher.fetchPortfolioPrice();
 		
 	}
 }

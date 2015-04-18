@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.jwm.stockwatch.PropertiesLoader;
-import com.jwm.stockwatch.domain.PortfolioUnitPrice;
+import com.jwm.stockwatch.domain.UnitPrice;
 
 public class FetcherFromQuickenImpl extends WebFetcher {
 
@@ -26,7 +26,7 @@ public class FetcherFromQuickenImpl extends WebFetcher {
 	}
 
 	@Override
-	protected PortfolioUnitPrice parseWebPage(Document doc) {
+	protected UnitPrice parseWebPage(Document doc) {
 		try {
 			log.debug(doc);
 			String title = doc.getElementsByTag("title").first().html();
@@ -48,7 +48,7 @@ public class FetcherFromQuickenImpl extends WebFetcher {
 			pctChange_s = pctChange_s.replace("(", "").replace(")", "").replace("%", "").trim();
 			double priceChange = Double.parseDouble(priceChange_s);
 			double pctChange = Double.parseDouble(pctChange_s);
-			PortfolioUnitPrice unitPrice = new PortfolioUnitPrice(title, quoteDate, price, priceChange, pctChange);
+			UnitPrice unitPrice = new UnitPrice(title, quoteDate, price, priceChange, pctChange);
 			log.debug("Successful parse:" + unitPrice);
 			return unitPrice;
 		} catch (Exception ex) {
