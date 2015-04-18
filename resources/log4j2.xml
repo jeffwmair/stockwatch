@@ -25,7 +25,10 @@
 	</Appenders>
 	<Loggers>
 		<!-- Turning on additivity causing the Root logger to be used as well.  Nice to log to the console too for debugging. -->
-		<Logger name="com.jwm" level="debug" additivity="true">
+		<Logger name="com.jwm.stockwatch" level="debug" additivity="true">
+			<AppenderRef ref="RollingFile" />
+		</Logger>
+		<Logger name="com.jwm.stockwatch.fetcher" level="info" additivity="true">
 			<AppenderRef ref="RollingFile" />
 		</Logger>
 		<Logger name="org.springframework" level="debug" additivity="true">
