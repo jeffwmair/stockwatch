@@ -9,6 +9,10 @@
 		<constructor-arg index="0"
 			value="/Users/Jeff/JeffsFiles/SoftwareDevelopment/apps/StockWatch/resources/app.properties" />
 	</bean>
+	
+	<bean id="unitPriceFileService" class="com.jwm.stockwatch.service.UnitPriceServiceFileImpl">
+		<constructor-arg index="0" ref="properties"/>
+	</bean>
 
 	<bean id="fetcherGoogleFinance" class="com.jwm.stockwatch.fetcher.FetcherFromGoogleFinanceImpl">
 		<constructor-arg index="0" ref="properties"></constructor-arg>
@@ -32,6 +36,7 @@
 		<constructor-arg index="0" ref="properties" />
 		<constructor-arg index="1" ref="fetcherQuicken" />
 		<constructor-arg index="2" ref="priceProcessor" />
+		<constructor-arg index="3" ref="unitPriceFileService"/>
 	</bean>
 
 </beans>

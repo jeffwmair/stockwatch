@@ -1,5 +1,6 @@
 package com.jwm.stockwatch.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,11 @@ import java.util.Date;
  * @author Jeff
  *
  */
-public class UnitPrice {
+public class UnitPrice implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2704190280118770026L;
 	private double currentPrice, changeInPrice, changeInPercent;
 	private String name;
 	private Date date;

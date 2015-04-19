@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.fetcher.WebFetcher;
 import com.jwm.stockwatch.processor.Processor;
+import com.jwm.stockwatch.service.UnitPriceService;
 
 public class App {
 
@@ -15,11 +16,13 @@ public class App {
 
 	private WebFetcher fetcher;
 	private Processor processor;
+	private UnitPriceService service;
 	private int minutesBetweenUpdates;
 
-	public App(PropertiesLoaderImpl props, WebFetcher fetcher, Processor processor) throws IOException {
+	public App(PropertiesLoaderImpl props, WebFetcher fetcher, Processor processor, UnitPriceService fileService) throws IOException {
 		this.fetcher = fetcher;
 		this.processor = processor;
+		this.service = fileService;
 		this.minutesBetweenUpdates = Integer.parseInt(props.getProperties().getProperty("sleeptime_minutes"));
 	}
 
@@ -29,10 +32,12 @@ public class App {
 		log.info("Starting PortfolioWatcher");
 		log.info("***************************************************");
 
-		UnitPrice lastEmailedPrice = null;
+		UnitPrice lastEmailedPrice = service.getSavedPrices().getLatestPrice();
+		
 		while (true) {
 
 			UnitPrice price = fetcher.fetchPortfolioPrice();
+			service.savePrice(price);
 
 			if (price == null) {
 				log.error("Price object was returned as null.  Sleeping until the next fetch");
