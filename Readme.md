@@ -1,1 +1,1 @@
-README!
+Simple program for monitoring prices.  Currently I use it for watching my mutual funds, but could be generalized to watch any price of anything, really.
