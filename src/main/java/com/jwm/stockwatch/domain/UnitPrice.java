@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * UnitPrice - price of a portfolio unit at a particular moment in
- * time.
+ * UnitPrice - price of some unit at a particular moment in time.
  * 
  * @author Jeff
  *
@@ -19,8 +18,7 @@ public class UnitPrice implements Serializable {
 	private String name;
 	private Date date;
 
-	public UnitPrice(String name, Date date, double currentPrice,
-			double changeInPrice, double changeInPercent) {
+	public UnitPrice(String name, Date date, double currentPrice, double changeInPrice, double changeInPercent) {
 		super();
 		this.currentPrice = currentPrice;
 		this.changeInPrice = changeInPrice;
@@ -90,8 +88,7 @@ public class UnitPrice implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Portfolio: '" + name + "', Date: " + date.toString()
-				+ ", Price: $" + currentPrice + ", Change: $" + changeInPrice
+		return "Portfolio: '" + name + "', Date: " + date.toString() + ", Price: $" + currentPrice + ", Change: $" + changeInPrice
 				+ ", Change Pct: " + changeInPercent + "%";
 	}
 

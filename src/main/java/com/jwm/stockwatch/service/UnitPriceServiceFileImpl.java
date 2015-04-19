@@ -14,19 +14,28 @@ import com.jwm.stockwatch.PropertiesLoader;
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.domain.UnitPriceCollection;
 
+/**
+ * Service for persisting price data to the disk. Quick and simple object
+ * serialization.
+ * 
+ * @author Jeff
+ *
+ */
 public class UnitPriceServiceFileImpl implements UnitPriceService {
 
 	private static Logger log = LogManager.getLogger(UnitPriceServiceFileImpl.class);
-
-	private final String DataFileName = "data/Prices.dat";
+	private final String DataDirectory = "data";
+	private final String DataFileName = DataDirectory + "/Prices.dat";
 
 	public UnitPriceServiceFileImpl(PropertiesLoader propsLoader) {
 
-		File dir = new File("data");
+		File dir = new File(DataDirectory);
+		/* create the data dir if not already there */
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
 
+		/* write an empty data file if not already there. */
 		File datafile = new File(DataFileName);
 		if (!datafile.exists()) {
 			savePricesToFile(new UnitPriceCollection());
@@ -34,11 +43,17 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 
 	}
 
+	/**
+	 * Get all unit prices already saved to the disk
+	 */
 	@Override
 	public UnitPriceCollection getSavedPrices() {
 		return getPricesFromFile();
 	}
 
+	/**
+	 * Save the unit price to the disk
+	 */
 	@Override
 	public void savePrice(UnitPrice price) {
 		UnitPriceCollection prices = getSavedPrices();

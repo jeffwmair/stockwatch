@@ -10,6 +10,11 @@ import javax.mail.internet.MimeMessage;
 
 import com.jwm.stockwatch.PropertiesLoader;
 
+/**
+ * Notifier of the email variety
+ * @author Jeff
+ *
+ */
 public class NotifierEmailSmtp implements Notifier {
 
 	private String recipient, host, fromAddress, fromPass;

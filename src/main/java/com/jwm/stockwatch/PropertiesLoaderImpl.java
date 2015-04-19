@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Properties loader
+ * @author Jeff
+ *
+ */
 public class PropertiesLoaderImpl implements PropertiesLoader {
 
 	private Properties props = null;

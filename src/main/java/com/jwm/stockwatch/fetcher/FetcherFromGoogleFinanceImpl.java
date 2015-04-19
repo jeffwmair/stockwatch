@@ -13,15 +13,15 @@ import org.jsoup.select.Elements;
 import com.jwm.stockwatch.PropertiesLoader;
 import com.jwm.stockwatch.domain.UnitPrice;
 
+/**
+ * The numbers on Google Finance are usually about 2-3 days behind :(
+ * @param propLoader
+ */
 public class FetcherFromGoogleFinanceImpl extends WebFetcher {
 
 	private static Logger log = LogManager.getLogger(FetcherFromGoogleFinanceImpl.class);
 	private String pageUrl;
 
-	/**
-	 * The numbers on Google Finance are usually about 2-3 days behind :(
-	 * @param propLoader
-	 */
 	public FetcherFromGoogleFinanceImpl(PropertiesLoader propLoader) {
 		pageUrl = "https://www.google.com/finance?q=" + propLoader.getProperties().getProperty("unitname_googlefinance");
 	}

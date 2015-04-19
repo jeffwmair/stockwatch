@@ -6,13 +6,18 @@ import org.apache.logging.log4j.Logger;
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.notifier.Notifier;
 
-public class ProcessorImpl implements Processor {
+/**
+ * Processor implementation:  sends notifications if the price has changed and the absolute change amount is greater than some threshold
+ * @author Jeff
+ *
+ */
+public class ProcessorThresholdImpl implements Processor {
 
-	private static Logger log = LogManager.getLogger(ProcessorImpl.class);
+	private static Logger log = LogManager.getLogger(ProcessorThresholdImpl.class);
 	private double priceChangeThreshold;
 	private Notifier notifier;
 
-	public ProcessorImpl(Notifier notifier, double threshold) {
+	public ProcessorThresholdImpl(Notifier notifier, double threshold) {
 		this.notifier = notifier;
 		this.priceChangeThreshold = threshold;
 	}
