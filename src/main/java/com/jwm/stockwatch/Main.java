@@ -6,10 +6,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 /**
- * Hello world!
+ * Application entry point.
  *
  */
 public class Main {
+	
 	private static Logger log = LogManager.getLogger(Main.class);
 
 	@SuppressWarnings("resource")

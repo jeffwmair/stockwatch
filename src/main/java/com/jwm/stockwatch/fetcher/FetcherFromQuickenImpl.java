@@ -12,15 +12,16 @@ import org.jsoup.select.Elements;
 import com.jwm.stockwatch.PropertiesLoader;
 import com.jwm.stockwatch.domain.UnitPrice;
 
+/**
+ * The numbers on this site are typically updated everyday
+ * 
+ * @param propsLoader
+ */
 public class FetcherFromQuickenImpl extends WebFetcher {
 
 	private static Logger log = LogManager.getLogger(FetcherFromQuickenImpl.class);
 	private String pageUrl;
 
-	/**
-	 * The numbers on this site are typically updated everyday
-	 * @param propsLoader
-	 */
 	public FetcherFromQuickenImpl(PropertiesLoader propsLoader) {
 		pageUrl = "http://quicken.intuit.com/investing/" + propsLoader.getProperties().getProperty("unitname_quicken");
 	}

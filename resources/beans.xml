@@ -7,7 +7,7 @@
 
 	<bean id="properties" class="com.jwm.stockwatch.PropertiesLoaderImpl">
 		<constructor-arg index="0"
-			value="/Users/Jeff/JeffsFiles/SoftwareDevelopment/apps/StockWatch/resources/app.properties" />
+			value="/Users/Jeff/prod/stockwatch/app.properties" />
 	</bean>
 	
 	<bean id="unitPriceFileService" class="com.jwm.stockwatch.service.UnitPriceServiceFileImpl">
@@ -27,7 +27,7 @@
 		<constructor-arg index="0" ref="properties" />
 	</bean>
 
-	<bean id="priceProcessor" class="com.jwm.stockwatch.processor.ProcessorImpl">
+	<bean id="priceProcessor" class="com.jwm.stockwatch.processor.ProcessorThresholdImpl">
 		<constructor-arg index="0" ref="notifierEmail" />
 		<constructor-arg index="1" value="0.01" />
 	</bean>

@@ -10,6 +10,11 @@ import com.jwm.stockwatch.fetcher.WebFetcher;
 import com.jwm.stockwatch.processor.Processor;
 import com.jwm.stockwatch.service.UnitPriceService;
 
+/**
+ * Application main worker
+ * @author Jeff
+ *
+ */
 public class App {
 
 	private static Logger log = LogManager.getLogger(App.class);
