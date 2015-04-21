@@ -37,13 +37,14 @@ public class App {
 		while (true) {
 
 			UnitPrice price = fetcher.fetchPortfolioPrice();
-			service.savePrice(price);
-
 			if (price == null) {
 				log.error("Price object was returned as null.  Sleeping until the next fetch");
 				sleep();
 				continue;
 			}
+
+			// save the price
+			service.savePrice(price);
 
 			if (lastEmailedPrice == null) {
 				log.info("LastEmail is null, so we are using this current price as the starting point.");
