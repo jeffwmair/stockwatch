@@ -8,6 +8,6 @@ After cloning the repo, you need to do a little configuration to be able to run 
 2.  Go into beans.xml and set the path to your app.properties file appropriately in the "properties" bean.  Ie, the file from step 1.
 3.  If there are no build errors, you should be able to start fetching prices.
 
-#Building (actually deploying)#
+#Build/Deploy#
 
 To use the provided Ant Build.xml script, you'll need to do a little editing. I have it configured to deploy into a particular "production" area.  I use some environment variables which you likely won't have.  Just have a look and change the paths to things that work for you.
