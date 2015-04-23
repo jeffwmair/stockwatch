@@ -60,6 +60,14 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		if (!prices.containsPrice(price)) {
 			prices.addPrice(price);
 			savePricesToFile(prices);
+
+			/* DEBUG */
+			if (log.isDebugEnabled()) {
+				log.debug("Printing all prices:");
+				for (UnitPrice p : prices.getPrices()) {
+					log.debug(p);
+				}
+			}
 		}
 	}
 
