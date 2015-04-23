@@ -52,7 +52,7 @@ public class FetcherFromGoogleFinanceImpl extends WebFetcher {
 			Date quoteDate = dateParser.parse(date_s);
 			return new UnitPrice(name, quoteDate, price, changeAmount, changePct);
 		} catch (Exception ex) {
-			log.error(ex);
+			log.error(ex, ex);
 			return null;
 		}
 	}

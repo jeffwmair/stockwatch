@@ -53,7 +53,7 @@ public class FetcherFromQuickenImpl extends WebFetcher {
 			log.debug("Successful parse:" + unitPrice);
 			return unitPrice;
 		} catch (Exception ex) {
-			log.error(ex);
+			log.error(ex, ex);
 			return null;
 		}
 	}

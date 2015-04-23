@@ -20,7 +20,7 @@ public class Main {
 		try {
 			app.run();
 		} catch (Exception ex) {
-			log.error(ex);
+			log.error(ex, ex);
 		}
 	}
 }
