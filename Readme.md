@@ -1,7 +1,9 @@
 #Overview#
-Simple program for monitoring prices.  Currently I use it for watching my mutual funds, but could be generalized to watch any price of anything, really.
+
+Simple program for monitoring prices.  Currently I use it for watching my mutual funds, but could be generalized to watch any price of anything, really.  There is no GUI, it sends notifications via email.
 
 #Running in the IDE#
+
 After cloning the repo, you need to do a little configuration to be able to run the program:
 
 1.  Copy (or edit directly, doesn't matter) app.template.properties.  Change the settings to be appropriate for you.  You definitely need to change the email_* settings, you could leave the unitname_* as is just to see how it works.
