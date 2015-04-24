@@ -7,7 +7,9 @@ import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.notifier.Notifier;
 
 /**
- * Processor implementation:  sends notifications if the price has changed and the absolute change amount is greater than some threshold
+ * Processor implementation: sends notifications if the price has changed and
+ * the absolute change amount is greater than some threshold
+ * 
  * @author Jeff
  *
  */
@@ -36,6 +38,8 @@ public class ProcessorThresholdImpl implements Processor {
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);
 			}
+		} else {
+			log.info("Latest price change is less than the threshold of:" + priceChangeThreshold);
 		}
 	}
 

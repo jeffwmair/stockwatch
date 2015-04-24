@@ -11,7 +11,7 @@
 	</target>
 	<target name="deployJarToProd" depends="setProperties">
 		<copy todir="${deployDir}">
-			<fileset dir="${devDirApp}/resources/" />
+			<fileset dir="${devDirApp}/src/main/resources/" />
 		</copy>
 		<jar destfile="${deployDir}/${appJarName}" filesetmanifest="mergewithoutmain">
 			<manifest>

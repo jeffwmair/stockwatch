@@ -38,6 +38,7 @@ public class App {
 		log.info("***************************************************");
 
 		UnitPrice lastEmailedPrice = service.getSavedPrices().getLatestPrice();
+		log.info("Last price:" + lastEmailedPrice);
 		
 		while (true) {
 
