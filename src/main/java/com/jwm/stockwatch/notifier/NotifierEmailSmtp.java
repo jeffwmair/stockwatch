@@ -9,9 +9,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.jwm.stockwatch.PropertiesLoader;
+import com.jwm.stockwatch.service.UnitPriceService;
 
 /**
  * Notifier of the email variety
+ * 
  * @author Jeff
  *
  */

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.notifier.Notifier;
+import com.jwm.stockwatch.service.UnitPriceService;
 
 /**
  * Processor implementation: sends notifications if the price has changed and
@@ -18,23 +19,26 @@ public class ProcessorThresholdImpl implements Processor {
 	private static Logger log = LogManager.getLogger(ProcessorThresholdImpl.class);
 	private double priceChangeThreshold;
 	private Notifier notifier;
+	private UnitPriceService service;
 
-	public ProcessorThresholdImpl(Notifier notifier, double threshold) {
+	public ProcessorThresholdImpl(Notifier notifier, double threshold, UnitPriceService service) {
 		this.notifier = notifier;
 		this.priceChangeThreshold = threshold;
+		this.service = service;
 	}
 
 	@Override
-	public void process(UnitPrice price, UnitPrice lastPrice) {
+	public void process(UnitPrice price) {
 
-		if (price.equals(lastPrice)) {
-			log.debug("Current portfolio price matches previous one, so no notification will be sent.  " + price.toString());
+		if (service.hasSentNotificationForPrice(price)) {
+			log.info("Already sent notification for price with date: " + price.getDate());
 			return;
 		}
 
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
 			try {
 				notifier.sendNotification("Portfolio Price Update", price.toString());
+				service.saveSentPriceNotification(price);
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);
 			}

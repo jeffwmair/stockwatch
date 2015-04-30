@@ -37,9 +37,6 @@ public class App {
 		log.info("Starting PortfolioWatcher");
 		log.info("***************************************************");
 
-		UnitPrice lastEmailedPrice = service.getSavedPrices().getLatestPrice();
-		log.info("Last price:" + lastEmailedPrice);
-		
 		while (true) {
 
 			UnitPrice price = fetcher.fetchPortfolioPrice();
@@ -51,16 +48,7 @@ public class App {
 
 			// save the price
 			service.savePrice(price);
-
-			if (lastEmailedPrice == null) {
-				log.info("LastEmail is null, so we are using this current price as the starting point.");
-				lastEmailedPrice = price;
-				sleep();
-				continue;
-			}
-
-			processor.process(price, lastEmailedPrice);
-			lastEmailedPrice = price;
+			processor.process(price);
 			sleep();
 		}
 	}
