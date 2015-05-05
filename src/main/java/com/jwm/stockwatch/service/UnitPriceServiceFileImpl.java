@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -157,6 +158,19 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		} catch (IOException i) {
 			log.error(i);
 		}
+	}
+
+	@Override
+	public double getNetChangeOverLast10() {
+		int n = 10;
+		List<UnitPrice> prices = new ArrayList<UnitPrice>(getPricesFromFile().getPrices());
+		Collections.reverse(prices);
+		int top = prices.size() < n ? prices.size() : n;
+		double netChange = 0;
+		for (int i = 0; i < top; i++) {
+			netChange += prices.get(i).getChangeInPrice();
+		}
+		return netChange;
 	}
 
 }

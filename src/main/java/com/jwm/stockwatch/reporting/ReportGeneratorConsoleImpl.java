@@ -26,13 +26,12 @@ public class ReportGeneratorConsoleImpl implements ReportGenerator {
 		StringBuilder messages = new StringBuilder();
 		messages.append("*** Report ***" + NewLine);
 
-		double netPriceChange = 0;
+		double netPriceChange = service.getNetChangeOverLast10();
 		for (UnitPrice price : prices.getPrices()) {
 			messages.append("\tPrice:" + price.toString() + "; Emailed ? " + service.hasSentNotificationForPrice(price) + NewLine);
-			netPriceChange += price.getChangeInPrice();
 		}
 		
-		messages.append("Total change since first record: $" + netPriceChange);
+		messages.append(String.format("Last 10 changes, net: $%.2f", netPriceChange));
 
 		log.debug(messages);
 		System.out.println(messages);
