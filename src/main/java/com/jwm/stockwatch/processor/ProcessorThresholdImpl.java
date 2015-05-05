@@ -1,5 +1,7 @@
 package com.jwm.stockwatch.processor;
 
+import java.text.NumberFormat;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +40,8 @@ public class ProcessorThresholdImpl implements Processor {
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
 			try {
 				double netChange = service.getNetChangeOverLast10();
-				notifier.sendNotification("Portfolio Price Update", price.toString() + "<br><strong>Last 10 days change: $" + netChange + "</strong>");
+				NumberFormat formatter = NumberFormat.getCurrencyInstance();
+				notifier.sendNotification("Portfolio Price Update", price.toString() + "<br><br><strong>Last 10 days change: " + formatter.format(netChange) + "</strong>");
 				service.saveSentPriceNotification(price);
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);
