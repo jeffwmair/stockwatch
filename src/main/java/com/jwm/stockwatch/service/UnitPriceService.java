@@ -8,6 +8,6 @@ public interface UnitPriceService {
 	boolean hasSentNotificationForPrice(UnitPrice price);
 	void savePrice(UnitPrice price);
 	void saveSentPriceNotification(UnitPrice price);
-	double getNetChangeOverLast10();
+	double getNetChangeOverLastN(int nDays);
 }
 

@@ -5,3 +5,4 @@
 .project
 /resources/app.properties
 /data
+*.swp

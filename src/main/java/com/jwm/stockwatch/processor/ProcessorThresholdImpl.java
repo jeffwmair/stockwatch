@@ -39,9 +39,13 @@ public class ProcessorThresholdImpl implements Processor {
 
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
 			try {
-				double netChange = service.getNetChangeOverLast10();
+				double netChange = service.getNetChangeOverLastN(10);
 				NumberFormat formatter = NumberFormat.getCurrencyInstance();
-				notifier.sendNotification("Portfolio Price Update", price.toString() + "<br><br><strong>Last 10 days change: " + formatter.format(netChange) + "</strong>");
+				notifier.sendNotification("Portfolio Price Update", price.toString()
+					+ "<br><br><strong>Last 3 days change: " + formatter.format(service.getNetChangeOverLastN(3)) + "</strong>"
+					+ "<br><br><strong>Last 10 days change: " + formatter.format(service.getNetChangeOverLastN(10)) + "</strong>"
+					+ "<br><br><strong>Last 15 days change: " + formatter.format(service.getNetChangeOverLastN(15)) + "</strong>"
+					+ "<br><br><strong>Last 20 days change: " + formatter.format(service.getNetChangeOverLastN(20)) + "</strong>");
 				service.saveSentPriceNotification(price);
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);

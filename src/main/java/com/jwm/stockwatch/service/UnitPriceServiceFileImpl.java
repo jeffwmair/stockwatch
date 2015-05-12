@@ -161,11 +161,10 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 	}
 
 	@Override
-	public double getNetChangeOverLast10() {
-		int n = 10;
+	public double getNetChangeOverLastN(int nDays) {
 		List<UnitPrice> prices = new ArrayList<UnitPrice>(getPricesFromFile().getPrices());
 		Collections.reverse(prices);
-		int top = prices.size() < n ? prices.size() : n;
+		int top = prices.size() < nDays ? prices.size() : nDays;
 		double netChange = 0;
 		for (int i = 0; i < top; i++) {
 			netChange += prices.get(i).getChangeInPrice();

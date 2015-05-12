@@ -26,7 +26,7 @@ public class ReportGeneratorConsoleImpl implements ReportGenerator {
 		StringBuilder messages = new StringBuilder();
 		messages.append("*** Report ***" + NewLine);
 
-		double netPriceChange = service.getNetChangeOverLast10();
+		double netPriceChange = service.getNetChangeOverLastN(10);
 		for (UnitPrice price : prices.getPrices()) {
 			messages.append("\tPrice:" + price.toString() + "; Emailed ? " + service.hasSentNotificationForPrice(price) + NewLine);
 		}
