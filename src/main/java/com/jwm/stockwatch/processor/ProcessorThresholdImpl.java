@@ -41,11 +41,18 @@ public class ProcessorThresholdImpl implements Processor {
 			try {
 				double netChange = service.getNetChangeOverLastN(10);
 				NumberFormat formatter = NumberFormat.getCurrencyInstance();
-				notifier.sendNotification("Portfolio Price Update", price.toString()
+				int chartDays = 20;
+				//String base64ImgData = service.getRecentPriceChartBase64Data(chartDays);
+				String chartUrl = service.getRecentPriceChartUrl(chartDays);
+				String message = price.toString()
 					+ "<br><br><strong>Last 3 days change: " + formatter.format(service.getNetChangeOverLastN(3)) + "</strong>"
 					+ "<br><br><strong>Last 10 days change: " + formatter.format(service.getNetChangeOverLastN(10)) + "</strong>"
 					+ "<br><br><strong>Last 15 days change: " + formatter.format(service.getNetChangeOverLastN(15)) + "</strong>"
-					+ "<br><br><strong>Last 20 days change: " + formatter.format(service.getNetChangeOverLastN(20)) + "</strong>");
+					+ "<br><br><strong>Last 20 days change: " + formatter.format(service.getNetChangeOverLastN(20)) + "</strong>"
+					+ "<br><br>"
+					+ "<a href='"+chartUrl+"'>Chart</a>";
+
+				notifier.sendNotification("Portfolio Price Update", message);
 				service.saveSentPriceNotification(price);
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);

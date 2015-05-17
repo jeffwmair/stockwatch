@@ -9,5 +9,7 @@ public interface UnitPriceService {
 	void savePrice(UnitPrice price);
 	void saveSentPriceNotification(UnitPrice price);
 	double getNetChangeOverLastN(int nDays);
+	String getRecentPriceChartBase64Data(int nDays);
+	String getRecentPriceChartUrl(int nDays);
 }
 
