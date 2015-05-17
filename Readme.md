@@ -2,7 +2,7 @@
 
 Simple program for monitoring prices.  Currently I use it for watching my mutual funds, but could be generalized to watch any price of anything, really.  There is no GUI, it sends notifications via email.
 
-#Running in the IDE#
+#Running
 
 After cloning the repo, you need to do a little configuration to be able to run the program:
 
@@ -12,4 +12,4 @@ After cloning the repo, you need to do a little configuration to be able to run 
 
 #Build/Deploy#
 
-To use the provided Ant Build.xml script, you'll need to do a little editing. I have it configured to deploy into a particular "production" area.  I use some environment variables which you likely won't have.  Just have a look and change the paths to things that work for you.
+The maven copy-dependencies plugin will copy the necessary jars into a lib/ directory during the package phase.  I have a deploy.sh script that copies everything to the "prod" directory. You would need to modify the paths in that script.
