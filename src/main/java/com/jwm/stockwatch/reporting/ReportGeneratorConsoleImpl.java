@@ -26,7 +26,8 @@ public class ReportGeneratorConsoleImpl implements ReportGenerator {
 		StringBuilder messages = new StringBuilder();
 		messages.append("*** Report ***" + NewLine);
 
-		double netPriceChange = service.getNetChangeOverLastN(10);
+		int reportIntervalInDays = 10;
+		double netPriceChange = service.getNetChangeOverLastN(reportIntervalInDays);
 		for (UnitPrice price : prices.getPrices()) {
 			messages.append("\tPrice:" + price.toString() + "; Emailed ? " + service.hasSentNotificationForPrice(price) + NewLine);
 		}
@@ -35,6 +36,8 @@ public class ReportGeneratorConsoleImpl implements ReportGenerator {
 
 		log.debug(messages);
 		System.out.println(messages);
+		String chartUrl = service.getRecentPriceChartUrl(30);
+		System.out.println("\n" + chartUrl);
 	}
 
 }
