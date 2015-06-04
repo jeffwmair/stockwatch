@@ -2,8 +2,8 @@ package com.jwm.stockwatch.processor;
 
 import java.text.NumberFormat;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.notifier.Notifier;
