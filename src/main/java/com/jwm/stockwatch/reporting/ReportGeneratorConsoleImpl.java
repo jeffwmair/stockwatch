@@ -36,7 +36,8 @@ public class ReportGeneratorConsoleImpl implements ReportGenerator {
 
 		log.debug(messages);
 		System.out.println(messages);
-		String chartUrl = service.getRecentPriceChartUrl(30);
+		int chartDays = 120;
+		String chartUrl = service.getRecentPriceChartUrl(chartDays);
 		System.out.println("\n" + chartUrl);
 	}
 

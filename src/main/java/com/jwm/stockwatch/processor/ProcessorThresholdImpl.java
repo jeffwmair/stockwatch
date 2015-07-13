@@ -39,9 +39,8 @@ public class ProcessorThresholdImpl implements Processor {
 
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
 			try {
-				double netChange = service.getNetChangeOverLastN(10);
 				NumberFormat formatter = NumberFormat.getCurrencyInstance();
-				int chartDays = 20;
+				int chartDays = 120;
 				//String base64ImgData = service.getRecentPriceChartBase64Data(chartDays);
 				String chartUrl = service.getRecentPriceChartUrl(chartDays);
 				String message = price.toString()
