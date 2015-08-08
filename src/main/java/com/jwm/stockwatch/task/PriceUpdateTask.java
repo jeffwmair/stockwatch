@@ -56,6 +56,7 @@ public class PriceUpdateTask {
 			return;
 		}
 
+		// todo: clean up the following, including the processor method signature
 		int chartDays = 120;
 		String chartUrl = priceService.getRecentPriceChartUrl(chartDays);
 		double last3DaysChange = priceService.getNetChangeOverLastN(3);
