@@ -46,6 +46,7 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 	private WebFetcher fetcher;
 	private Processor processor;
 
+
 	public UnitPriceServiceFileImpl(Processor processor, WebFetcher fetcher, PropertiesLoader propsLoader) {
 
 		this.fetcher = fetcher;
@@ -60,7 +61,7 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		/* write an empty data file if not already there. */
 		File datafile = new File(DataFileName);
 		if (!datafile.exists()) {
-			savePricesToFile(new UnitPriceCollection());
+			save(new UnitPriceCollection(), DataFileName);
 		}
 
 		File notificationsFile = new File(DataFileNameNotifications);
@@ -80,9 +81,9 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug("Checked if we already sent a notification for price: " + price.toString() + "; already sent="
-					+ Boolean.toString(sent));
+			log.debug("Checked if we already sent a notification for price: " + price.toString() + "; already sent=" + Boolean.toString(sent));
 		}
+
 		return sent;
 	}
 
@@ -116,7 +117,7 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		UnitPriceCollection prices = getSavedPrices();
 		if (!prices.containsPrice(price)) {
 			prices.addPrice(price);
-			savePricesToFile(prices);
+			save(prices, DataFileName);
 
 			/* DEBUG */
 			if (log.isDebugEnabled()) {
@@ -131,59 +132,45 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 	}
 
 	private List<SentNotification> getSentNotifications() {
-		List<SentNotification> notifications = null;
+		return load(DataFileNameNotifications);
+	}
+
+	/**
+	 * Save some object to the disk
+	 */
+	private void save(Object objToSave, String filename) {
 		try {
-			FileInputStream fileIn = new FileInputStream(DataFileNameNotifications);
+			FileOutputStream fileOut = new FileOutputStream(filename);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(objToSave);
+			out.close();
+			fileOut.close();
+		} catch (IOException i) {
+			log.error(i);
+		}
+	}
+
+	private <T> T load(String filename) {
+		T retval = null;
+		try {
+			FileInputStream fileIn = new FileInputStream(filename);
 			ObjectInputStream in = null;
 			in = new ObjectInputStream(fileIn);
-			notifications = (List<SentNotification>) in.readObject();
+			retval = (T) in.readObject();
 			in.close();
 			fileIn.close();
-			return notifications;
+			return retval;
 		} catch (Exception e) {
-			log.error(e);
-			return null;
+			throw new RuntimeException("Unable to load file with name '"+filename+"'.  Exception Message:" + e.getMessage());
 		}
 	}
 
 	private void saveNotification(List<SentNotification> notifications) {
-		try {
-			FileOutputStream fileOut = new FileOutputStream(DataFileNameNotifications);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(notifications);
-			out.close();
-			fileOut.close();
-		} catch (IOException i) {
-			log.error(i);
-		}
+		save(notifications, DataFileNameNotifications);
 	}
 
 	private UnitPriceCollection getPricesFromFile() {
-		UnitPriceCollection prices = null;
-		try {
-			FileInputStream fileIn = new FileInputStream(DataFileName);
-			ObjectInputStream in = null;
-			in = new ObjectInputStream(fileIn);
-			prices = (UnitPriceCollection) in.readObject();
-			in.close();
-			fileIn.close();
-			return prices;
-		} catch (Exception e) {
-			log.error(e);
-			return null;
-		}
-	}
-
-	private void savePricesToFile(UnitPriceCollection prices) {
-		try {
-			FileOutputStream fileOut = new FileOutputStream(DataFileName);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(prices);
-			out.close();
-			fileOut.close();
-		} catch (IOException i) {
-			log.error(i);
-		}
+		return load(DataFileName);
 	}
 
 	@Override
