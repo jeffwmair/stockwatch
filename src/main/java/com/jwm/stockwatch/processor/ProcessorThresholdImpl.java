@@ -6,8 +6,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.jwm.stockwatch.domain.UnitPrice;
-import com.jwm.stockwatch.notifier.Notifier;
 import com.jwm.stockwatch.service.UnitPriceService;
+import com.jwm.stockwatch.notifier.Notifier;
 
 /**
  * Processor implementation: sends notifications if the price has changed and
@@ -21,16 +21,14 @@ public class ProcessorThresholdImpl implements Processor {
 	private static Logger log = LogManager.getLogger(ProcessorThresholdImpl.class);
 	private double priceChangeThreshold;
 	private Notifier notifier;
-	private UnitPriceService service;
 
-	public ProcessorThresholdImpl(Notifier notifier, double threshold, UnitPriceService service) {
+	public ProcessorThresholdImpl(Notifier notifier, double threshold) {
 		this.notifier = notifier;
 		this.priceChangeThreshold = threshold;
-		this.service = service;
 	}
 
 	@Override
-	public void process(UnitPrice price) {
+	public void process(UnitPrice price, UnitPriceService service) {
 
 		if (service.hasSentNotificationForPrice(price)) {
 			log.info("Already sent notification for price with date: " + price.getDate());

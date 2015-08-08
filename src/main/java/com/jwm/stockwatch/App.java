@@ -19,14 +19,10 @@ public class App {
 
 	private static Logger log = LogManager.getLogger(App.class);
 
-	private WebFetcher fetcher;
-	private Processor processor;
 	private UnitPriceService service;
 	private int minutesBetweenUpdates;
 
-	public App(PropertiesLoaderImpl props, WebFetcher fetcher, Processor processor, UnitPriceService fileService) throws IOException {
-		this.fetcher = fetcher;
-		this.processor = processor;
+	public App(PropertiesLoaderImpl props, UnitPriceService fileService) throws IOException {
 		this.service = fileService;
 		this.minutesBetweenUpdates = Integer.parseInt(props.getProperties().getProperty("sleeptime_minutes"));
 	}
@@ -38,17 +34,7 @@ public class App {
 		log.info("***************************************************");
 
 		while (true) {
-
-			UnitPrice price = fetcher.fetchPortfolioPrice();
-			if (price == null) {
-				log.error("Price object was returned as null.  Sleeping until the next fetch");
-				sleep();
-				continue;
-			}
-
-			// save the price
-			service.savePrice(price);
-			processor.process(price);
+			service.savePrice();
 			sleep();
 		}
 	}

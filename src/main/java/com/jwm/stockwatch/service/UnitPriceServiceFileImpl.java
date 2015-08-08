@@ -13,6 +13,8 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.jwm.stockwatch.fetcher.WebFetcher;
+import com.jwm.stockwatch.processor.Processor;
 import com.jwm.stockwatch.PropertiesLoader;
 import com.jwm.stockwatch.domain.SentNotification;
 import com.jwm.stockwatch.domain.UnitPrice;
@@ -41,8 +43,13 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 	private final String DataDirectory = "data";
 	private final String DataFileName = DataDirectory + "/Prices.dat";
 	private final String DataFileNameNotifications = DataDirectory + "/Notifications.dat";
+	private WebFetcher fetcher;
+	private Processor processor;
 
-	public UnitPriceServiceFileImpl(PropertiesLoader propsLoader) {
+	public UnitPriceServiceFileImpl(Processor processor, WebFetcher fetcher, PropertiesLoader propsLoader) {
+
+		this.fetcher = fetcher;
+		this.processor = processor;
 
 		File dir = new File(DataDirectory);
 		/* create the data dir if not already there */
@@ -98,7 +105,14 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 	 * Save the unit price to the disk
 	 */
 	@Override
-	public void savePrice(UnitPrice price) {
+	public void savePrice() {
+
+		UnitPrice price = fetcher.fetchPortfolioPrice();
+		if (price == null) {
+			log.error("Price object was returned as null.  Sleeping until the next fetch");
+			return;
+		}
+
 		UnitPriceCollection prices = getSavedPrices();
 		if (!prices.containsPrice(price)) {
 			prices.addPrice(price);
@@ -112,6 +126,8 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 				}
 			}
 		}
+
+		processor.process(price, this);
 	}
 
 	private List<SentNotification> getSentNotifications() {
@@ -200,6 +216,7 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		 */
 
 		List<UnitPrice> prices = getLastNPrices(nDays);
+		Collections.reverse(prices);
 
 		List<Double> dataset = new ArrayList<Double>();
 		List<String> dates = new ArrayList<String>();
