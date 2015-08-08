@@ -5,15 +5,15 @@ import org.apache.log4j.Logger;
 
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.domain.UnitPriceCollection;
-import com.jwm.stockwatch.service.UnitPriceService;
+import com.jwm.stockwatch.service.UnitPriceFileService;
 
 public class ReportGeneratorConsoleImpl implements ReportGenerator {
 
 	private static Logger log = LogManager.getLogger(ReportGeneratorConsoleImpl.class);
-	private UnitPriceService service;
+	private UnitPriceFileService service;
 	private final String NewLine = System.getProperty("line.separator");
 
-	public ReportGeneratorConsoleImpl(UnitPriceService service) {
+	public ReportGeneratorConsoleImpl(UnitPriceFileService service) {
 		this.service = service;
 	}
 

@@ -6,7 +6,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.jwm.stockwatch.domain.UnitPrice;
-import com.jwm.stockwatch.service.UnitPriceService;
 import com.jwm.stockwatch.notifier.Notifier;
 
 /**
@@ -28,34 +27,28 @@ public class ProcessorThresholdImpl implements Processor {
 	}
 
 	@Override
-	public void process(UnitPrice price, UnitPriceService service) {
-
-		if (service.hasSentNotificationForPrice(price)) {
-			log.info("Already sent notification for price with date: " + price.getDate());
-			return;
-		}
+	public boolean process(UnitPrice price, double last3DaysChange, double last10DaysChange, double last15DaysChange, double last20DaysChange, String chartUrl) {
 
 		if (price.getAbsChangeInPrice() > priceChangeThreshold) {
 			try {
 				NumberFormat formatter = NumberFormat.getCurrencyInstance();
-				int chartDays = 120;
-				//String base64ImgData = service.getRecentPriceChartBase64Data(chartDays);
-				String chartUrl = service.getRecentPriceChartUrl(chartDays);
 				String message = price.toString()
-					+ "<br><br><strong>Last 3 days change: " + formatter.format(service.getNetChangeOverLastN(3)) + "</strong>"
-					+ "<br><br><strong>Last 10 days change: " + formatter.format(service.getNetChangeOverLastN(10)) + "</strong>"
-					+ "<br><br><strong>Last 15 days change: " + formatter.format(service.getNetChangeOverLastN(15)) + "</strong>"
-					+ "<br><br><strong>Last 20 days change: " + formatter.format(service.getNetChangeOverLastN(20)) + "</strong>"
+					+ "<br><br><strong>Last 3 days change: " + formatter.format(last3DaysChange) + "</strong>"
+					+ "<br><br><strong>Last 10 days change: " + formatter.format(last10DaysChange) + "</strong>"
+					+ "<br><br><strong>Last 15 days change: " + formatter.format(last15DaysChange) + "</strong>"
+					+ "<br><br><strong>Last 20 days change: " + formatter.format(last20DaysChange) + "</strong>"
 					+ "<br><br>"
 					+ "<a href='"+chartUrl+"'>Chart</a>";
 
 				notifier.sendNotification("Portfolio Price Update", message);
-				service.saveSentPriceNotification(price);
+				return true;
 			} catch (Exception e) {
 				log.error("Failed to send email: " + e.getMessage(), e);
+				return false;
 			}
 		} else {
 			log.info("Latest price change is less than the threshold of:" + priceChangeThreshold);
+			return false;
 		}
 	}
 

@@ -5,10 +5,7 @@ import java.io.IOException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.jwm.stockwatch.domain.UnitPrice;
-import com.jwm.stockwatch.fetcher.WebFetcher;
-import com.jwm.stockwatch.processor.Processor;
-import com.jwm.stockwatch.service.UnitPriceService;
+import com.jwm.stockwatch.task.*;
 
 /**
  * Application main worker
@@ -19,11 +16,11 @@ public class App {
 
 	private static Logger log = LogManager.getLogger(App.class);
 
-	private UnitPriceService service;
+	private PriceUpdateTask task;
 	private int minutesBetweenUpdates;
 
-	public App(PropertiesLoaderImpl props, UnitPriceService fileService) throws IOException {
-		this.service = fileService;
+	public App(PropertiesLoaderImpl props, PriceUpdateTask task) throws IOException {
+		this.task = task;
 		this.minutesBetweenUpdates = Integer.parseInt(props.getProperties().getProperty("sleeptime_minutes"));
 	}
 
@@ -34,7 +31,7 @@ public class App {
 		log.info("***************************************************");
 
 		while (true) {
-			service.savePrice();
+			task.execute();
 			sleep();
 		}
 	}

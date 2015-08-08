@@ -13,9 +13,6 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.jwm.stockwatch.fetcher.WebFetcher;
-import com.jwm.stockwatch.processor.Processor;
-import com.jwm.stockwatch.PropertiesLoader;
 import com.jwm.stockwatch.domain.SentNotification;
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.domain.UnitPriceCollection;
@@ -37,20 +34,15 @@ import org.apache.commons.codec.binary.Base64;
  * @author Jeff
  *
  */
-public class UnitPriceServiceFileImpl implements UnitPriceService {
+public class UnitPriceFileService {
 
-	private static Logger log = LogManager.getLogger(UnitPriceServiceFileImpl.class);
+	private static Logger log = LogManager.getLogger(UnitPriceFileService.class);
 	private final String DataDirectory = "data";
 	private final String DataFileName = DataDirectory + "/Prices.dat";
 	private final String DataFileNameNotifications = DataDirectory + "/Notifications.dat";
-	private WebFetcher fetcher;
-	private Processor processor;
 
 
-	public UnitPriceServiceFileImpl(Processor processor, WebFetcher fetcher, PropertiesLoader propsLoader) {
-
-		this.fetcher = fetcher;
-		this.processor = processor;
+	public UnitPriceFileService() {
 
 		File dir = new File(DataDirectory);
 		/* create the data dir if not already there */
@@ -70,7 +62,6 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		}
 	}
 
-	@Override
 	public boolean hasSentNotificationForPrice(UnitPrice price) {
 		List<SentNotification> notifications = getSentNotifications();
 		boolean sent = false;
@@ -87,50 +78,22 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		return sent;
 	}
 
-	@Override
 	public void saveSentPriceNotification(UnitPrice price) {
 		List<SentNotification> notifications = getSentNotifications();
 		notifications.add(new SentNotification(price));
 		saveNotification(notifications);
 	}
 
+	public void saveUnitPriceCollection(UnitPriceCollection prices) {
+		save(prices, DataFileName);
+	}
+
 	/**
 	 * Get all unit prices already saved to the disk
 	 */
-	@Override
 	public UnitPriceCollection getSavedPrices() {
 		return getPricesFromFile();
 	}
-
-	/**
-	 * Save the unit price to the disk
-	 */
-	@Override
-	public void savePrice() {
-
-		UnitPrice price = fetcher.fetchPortfolioPrice();
-		if (price == null) {
-			log.error("Price object was returned as null.  Sleeping until the next fetch");
-			return;
-		}
-
-		UnitPriceCollection prices = getSavedPrices();
-		if (!prices.containsPrice(price)) {
-			prices.addPrice(price);
-			save(prices, DataFileName);
-
-			/* DEBUG */
-			if (log.isDebugEnabled()) {
-				log.debug("Printing all prices:");
-				for (UnitPrice p : prices.getPrices()) {
-					log.debug(p);
-				}
-			}
-		}
-
-		processor.process(price, this);
-	}
-
 	private List<SentNotification> getSentNotifications() {
 		return load(DataFileNameNotifications);
 	}
@@ -173,7 +136,6 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		return load(DataFileName);
 	}
 
-	@Override
 	public double getNetChangeOverLastN(int nDays) {
 		double netChange = 0;
 		List<UnitPrice> nPrices = getLastNPrices(nDays);
@@ -195,7 +157,6 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		return nPrices;
 	}
 
-	@Override
 	public String getRecentPriceChartUrl(int nDays) {
 
 		/* 
@@ -253,7 +214,6 @@ public class UnitPriceServiceFileImpl implements UnitPriceService {
 		return url;
 	}
 
-	@Override
 	public String getRecentPriceChartBase64Data(int nDays) {
 
 		String url = getRecentPriceChartUrl(nDays);

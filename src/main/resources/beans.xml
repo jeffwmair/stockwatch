@@ -2,6 +2,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
@@ -10,11 +11,7 @@
 			value="/Users/Jeff/prod/stockwatch/app.properties" />
 	</bean>
 
-	<bean id="unitPriceFileService" class="com.jwm.stockwatch.service.UnitPriceServiceFileImpl">
-		<constructor-arg index="0" ref="priceProcessor" />
-		<constructor-arg index="1" ref="fetcherQuicken" />
-		<constructor-arg index="2" ref="properties" />
-	</bean>
+	<bean id="unitPriceFileService" class="com.jwm.stockwatch.service.UnitPriceFileService" />
 
 	<bean id="reportGeneratorConsole" class="com.jwm.stockwatch.reporting.ReportGeneratorConsoleImpl">
 		<constructor-arg index="0" ref="unitPriceFileService" />
@@ -38,9 +35,12 @@
 		<constructor-arg index="1" value="0.01" />
 	</bean>
 
+	<bean id="priceUpdateTask" class="com.jwm.stockwatch.task.PriceUpdateTask" 
+		c:fetcher-ref="fetcherQuicken" c:priceService-ref="unitPriceFileService" c:processor-ref="priceProcessor" />
+
 	<bean id="app" class="com.jwm.stockwatch.App">
 		<constructor-arg index="0" ref="properties" />
-		<constructor-arg index="1" ref="unitPriceFileService" />
+		<constructor-arg index="1" ref="priceUpdateTask" />
 	</bean>
 
 </beans>

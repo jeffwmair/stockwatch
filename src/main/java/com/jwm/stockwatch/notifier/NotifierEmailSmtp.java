@@ -9,7 +9,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.jwm.stockwatch.PropertiesLoader;
-import com.jwm.stockwatch.service.UnitPriceService;
+import com.jwm.stockwatch.service.UnitPriceFileService;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -37,30 +37,30 @@ public class NotifierEmailSmtp implements Notifier {
 	private int port;
 
 	@Override
-		public void sendNotification(String subject, String messageBody) throws Exception {
+	public void sendNotification(String subject, String messageBody) throws Exception {
 
-			if (log.isDebugEnabled()) {
-				log.debug("Message:"+messageBody);
-			}
-
-			Properties props = System.getProperties();
-			props.put("mail.smtp.host", host);
-			props.put("mail.smtp.user", fromAddress);
-			props.put("mail.smtp.password", fromPass);
-			props.put("mail.smtp.port", port);
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.auth", "true");
-
-			Session session = Session.getDefaultInstance(props, null);
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(fromAddress));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-			message.setSubject(subject);
-			message.setContent(messageBody, "text/html; charset=utf-8");
-
-			Transport transport = session.getTransport("smtp");
-			transport.connect(host, fromAddress, fromPass);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
+		if (log.isDebugEnabled()) {
+			log.debug("Message:"+messageBody);
 		}
+
+		Properties props = System.getProperties();
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.user", fromAddress);
+		props.put("mail.smtp.password", fromPass);
+		props.put("mail.smtp.port", port);
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.auth", "true");
+
+		Session session = Session.getDefaultInstance(props, null);
+		MimeMessage message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(fromAddress));
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+		message.setSubject(subject);
+		message.setContent(messageBody, "text/html; charset=utf-8");
+
+		Transport transport = session.getTransport("smtp");
+		transport.connect(host, fromAddress, fromPass);
+		transport.sendMessage(message, message.getAllRecipients());
+		transport.close();
+	}
 }
