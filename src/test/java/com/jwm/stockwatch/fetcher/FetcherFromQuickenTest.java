@@ -15,8 +15,6 @@ public class FetcherFromQuickenTest {
 		props.put("unitname_quicken", "mutual-funds/MUTUAL%3ACIB837/CIBC-Managed-Balanced-Growth-Portfolio");
 		PropertiesLoader propsLoader = new PropertiesLoaderStub(props);
 		WebFetcher fetcher = new FetcherFromQuickenImpl(propsLoader);
-		@SuppressWarnings("unused")
-		UnitPrice foo = fetcher.fetchPortfolioPrice();
-		
+		//UnitPrice foo = fetcher.fetchPortfolioPrice();
 	}
 }

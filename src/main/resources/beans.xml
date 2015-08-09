@@ -13,9 +13,8 @@
 
 	<bean id="unitPriceFileService" class="com.jwm.stockwatch.service.UnitPriceFileService" />
 
-	<bean id="reportGeneratorConsole" class="com.jwm.stockwatch.reporting.ReportGeneratorConsoleImpl">
-		<constructor-arg index="0" ref="unitPriceFileService" />
-	</bean>
+	<bean id="reportGeneratorConsole" class="com.jwm.stockwatch.reporting.ReportGeneratorConsoleImpl" 
+		c:service-ref="unitPriceFileService" c:chartService-ref="chartService" />
 
 	<bean id="fetcherGoogleFinance" class="com.jwm.stockwatch.fetcher.FetcherFromGoogleFinanceImpl">
 		<constructor-arg index="0" ref="properties"></constructor-arg>
@@ -35,8 +34,10 @@
 		<constructor-arg index="1" value="0.01" />
 	</bean>
 
+	<bean id="chartService" class="com.jwm.stockwatch.service.ChartService" c:priceService-ref="unitPriceFileService" />
+
 	<bean id="priceUpdateTask" class="com.jwm.stockwatch.task.PriceUpdateTask" 
-		c:fetcher-ref="fetcherQuicken" c:priceService-ref="unitPriceFileService" c:processor-ref="priceProcessor" />
+		c:fetcher-ref="fetcherQuicken" c:priceService-ref="unitPriceFileService" c:processor-ref="priceProcessor" c:chartService-ref="chartService" />
 
 	<bean id="app" class="com.jwm.stockwatch.App">
 		<constructor-arg index="0" ref="properties" />

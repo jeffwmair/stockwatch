@@ -17,15 +17,9 @@ import com.jwm.stockwatch.domain.SentNotification;
 import com.jwm.stockwatch.domain.UnitPrice;
 import com.jwm.stockwatch.domain.UnitPriceCollection;
 
-import static com.googlecode.charts4j.Color.*;
-import static com.googlecode.charts4j.UrlUtil.normalize;
-import com.googlecode.charts4j.*;
-
 import org.jsoup.Jsoup;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Service for persisting price data to the disk. Quick and simple object
@@ -40,7 +34,6 @@ public class UnitPriceFileService {
 	private final String DataDirectory = "data";
 	private final String DataFileName = DataDirectory + "/Prices.dat";
 	private final String DataFileNameNotifications = DataDirectory + "/Notifications.dat";
-
 
 	public UnitPriceFileService() {
 
@@ -146,7 +139,7 @@ public class UnitPriceFileService {
 		return netChange;
 	}
 
-	private List<UnitPrice> getLastNPrices(int nDays) {
+	public List<UnitPrice> getLastNPrices(int nDays) {
 		List<UnitPrice> prices = new ArrayList<UnitPrice>(getPricesFromFile().getPrices());
 		Collections.reverse(prices);
 		int top = prices.size() < nDays ? prices.size() : nDays;
@@ -155,82 +148,6 @@ public class UnitPriceFileService {
 			nPrices.add(prices.get(i));
 		}
 		return nPrices;
-	}
-
-	public String getRecentPriceChartUrl(int nDays) {
-
-		/* 
-		 * this all needs to be cleaned up
-		 */
-
-		List<UnitPrice> prices = getLastNPrices(nDays);
-		Collections.reverse(prices);
-
-		List<Double> dataset = new ArrayList<Double>();
-		List<String> dates = new ArrayList<String>();
-
-		Double maxVal = 15.0;
-		Double minVal = 12.0;
-
-		for (int i = 0; i < prices.size(); i++) {
-			UnitPrice p = prices.get(i);
-			Double scaledVal = 100 * ((p.getCurrentPrice()-minVal)/(maxVal-minVal));
-			dataset.add(scaledVal);
-			dates.add(p.getDate().toString());
-		}
-
-		String datasetname = "Mutual Fund Price";
-		Line dataLine = Plots.newLine(Data.newData(dataset), Color.newColor("CA3D05"),datasetname);
-		dataLine.setLineStyle(LineStyle.newLineStyle(3, 1, 0));
-		dataLine.addShapeMarkers(Shape.DIAMOND, Color.newColor("CA3D05"), 12);
-		dataLine.addShapeMarkers(Shape.DIAMOND, Color.WHITE, 8);
-
-		LineChart chart = GCharts.newLineChart(dataLine);
-		chart.setSize(600, 450);
-		chart.setTitle("Price Chart", WHITE, 14);
-		chart.setGrid(25, 25, 3, 2);
-
-		AxisStyle axisStyle = AxisStyle.newAxisStyle(WHITE, 12, AxisTextAlignment.CENTER);
-		AxisLabels yAxis = AxisLabelsFactory.newAxisLabels("12.0", "13.5", "15.0");
-		//AxisLabels xAxis3 = AxisLabelsFactory.newAxisLabels("Date", 10.0);
-		//xAxis3.setAxisStyle(AxisStyle.newAxisStyle(WHITE, 14, AxisTextAlignment.CENTER));
-		yAxis.setAxisStyle(axisStyle);
-		AxisLabels yAxis2 = AxisLabelsFactory.newAxisLabels("Price", 50.0);
-		yAxis2.setAxisStyle(AxisStyle.newAxisStyle(WHITE, 14, AxisTextAlignment.CENTER));
-		yAxis2.setAxisStyle(axisStyle);
-
-		//chart.addXAxisLabels(xAxis3);
-		chart.addYAxisLabels(yAxis);
-		chart.addYAxisLabels(yAxis2);
-		chart.setBackgroundFill(Fills.newSolidFill(Color.newColor("1F1D1D")));
-		LinearGradientFill fill = Fills.newLinearGradientFill(0, Color.newColor("363433"), 100);
-		fill.addColorAndOffset(Color.newColor("2E2B2A"), 0);
-		chart.setAreaFill(fill);
-
-		String url = chart.toURLString();
-		if (log.isDebugEnabled()) {
-			log.debug("Generated chart url:" + url);
-		}
-		return url;
-	}
-
-	public String getRecentPriceChartBase64Data(int nDays) {
-
-		String url = getRecentPriceChartUrl(nDays);
-		Response chartImageResponse = null;
-		try {
-			chartImageResponse = Jsoup.connect(url).ignoreContentType(true).execute();
-		}
-		catch (IOException ex) {
-			log.error(ex);				
-			return "";
-		}
-		byte[] imageBytes = chartImageResponse.bodyAsBytes();
-		String imageBase64 = new String(Base64.encodeBase64(imageBytes));
-		if (log.isDebugEnabled()) {
-			log.debug("Generated chart image data base64:" + imageBase64);
-		}
-		return imageBase64;
 	}
 
 }

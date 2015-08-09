@@ -15,15 +15,18 @@ public class PriceUpdateTask {
 	private WebFetcher fetcher;
 	private UnitPriceFileService priceService;
 	private Processor processor;
+	private ChartService chartService;
 	private static Logger log = LogManager.getLogger(ProcessorThresholdImpl.class);
 
-	public PriceUpdateTask(WebFetcher fetcher, UnitPriceFileService priceService, Processor processor) {
+	public PriceUpdateTask(WebFetcher fetcher, UnitPriceFileService priceService, Processor processor, ChartService chartService) {
 		Assert.notNull(fetcher);
 		Assert.notNull(priceService);
 		Assert.notNull(processor);
+		Assert.notNull(chartService);
 		this.fetcher = fetcher;
 		this.priceService = priceService;
 		this.processor = processor;
+		this.chartService = chartService;
 	}
 
 
@@ -42,7 +45,6 @@ public class PriceUpdateTask {
 			prices.addPrice(price);
 			priceService.saveUnitPriceCollection(prices);
 
-			/* DEBUG */
 			if (log.isDebugEnabled()) {
 				log.debug("Printing all prices:");
 				for (UnitPrice p : prices.getPrices()) {
@@ -58,7 +60,7 @@ public class PriceUpdateTask {
 
 		// todo: clean up the following, including the processor method signature
 		int chartDays = 120;
-		String chartUrl = priceService.getRecentPriceChartUrl(chartDays);
+		String chartUrl = chartService.generateChartUrl(chartDays);
 		double last3DaysChange = priceService.getNetChangeOverLastN(3);
 		double last10DaysChange = priceService.getNetChangeOverLastN(10);
 		double last15DaysChange = priceService.getNetChangeOverLastN(15);
