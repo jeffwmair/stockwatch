@@ -31,7 +31,7 @@
 
 	<bean id="priceProcessor" class="com.jwm.stockwatch.processor.ProcessorThresholdImpl">
 		<constructor-arg index="0" ref="notifierEmail" />
-		<constructor-arg index="1" value="0.01" />
+		<constructor-arg index="1" value="0.00" />
 	</bean>
 
 	<bean id="chartService" class="com.jwm.stockwatch.service.ChartService" c:priceService-ref="unitPriceFileService" />

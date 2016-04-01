@@ -6,3 +6,7 @@
 /resources/app.properties
 /data
 *.swp
+/out
+.idea/
+src/test/logs/
+*.iml

@@ -15,7 +15,6 @@ import com.jwm.stockwatch.domain.UnitPrice;
 /**
  * The numbers on this site are typically updated everyday
  * 
- * @param propsLoader
  */
 public class FetcherFromQuickenImpl extends WebFetcher {
 

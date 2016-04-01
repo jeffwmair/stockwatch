@@ -12,10 +12,6 @@ public class SentNotification implements Serializable {
 	private static final long serialVersionUID = 5080042467107785483L;
 	Date date;
 	
-	public SentNotification() {
-		
-	}
-	
 	public SentNotification(UnitPrice p) {
 		this.date = p.getDate();
 	}
